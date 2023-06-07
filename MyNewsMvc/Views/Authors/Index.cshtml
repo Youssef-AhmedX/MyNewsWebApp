@@ -1,0 +1,66 @@
+﻿@model IEnumerable<AuthorViewModel>
+
+@{
+    ViewData["Title"] = "Authors";
+}
+
+
+<div class="card border-primary mt-5 mb-3">
+    <div class="card-header bg-primary text-light h5 p-4">
+        <div class="row align-items-center">
+            <div class="col-6">
+                <i class="bi bi-vector-pen"></i>
+                <span class="ps-2">
+                    Authors
+                </span>
+
+            </div>
+            <div class="col-6 text-end">
+                <a class="js-render-modal btn btn-success" data-url="/Authors/Create" data-title="Edit Author">Add Author</a>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="card-body text-secondary">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th class="text-center">Published News</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var author in Model)
+                {
+                    <tr>
+                        <partial name="_RowData" model="author" />
+
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+
+@section Scripts{
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+            datatable = $('table').DataTable({
+                columnDefs: [
+                    { orderable: false, targets: 2 }
+                ],
+                order: [[0, 'asc']],
+            });
+        });
+    </script>
+}

@@ -1,0 +1,33 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.logoHeader {
+    width: 140px;
+}
+
+header {
+    width: 100%;
+    z-index: 999;
+    top: 0;
+}
+
+.container {
+    margin-top: 150px
+}

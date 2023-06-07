@@ -1,0 +1,25 @@
+﻿@model AuthorViewModel
+
+<td>
+    <p>
+        @Model.Name
+    </p>
+</td>
+
+<td class="text-center">
+    23
+</td>
+
+<td class="text-center">
+    <a href="javascript:;" class="js-render-modal btn btn-outline btn-outline-primary btn-active-light-primary" data-url="/Authors/Edit/@Model.Id" data-title="Edit Author" data-is-edited="true">
+        <i class="bi bi-pencil-square"></i>
+        Edit
+    </a>
+    <a data-url="/Authors/ToggleStatus/@Model.Id" data-message="Are You Sure That You Want To Delete Author" data-title="Change Author Status" href="javascript:;" class="js-change-btn btn btn-outline btn-outline-danger btn-active-light-danger">
+
+        <i class="bi bi-x-circle"></i>
+        <span class="js-btn-text">
+            Delete
+        </span>
+    </a>
+</td>

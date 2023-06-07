@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "datatables@1.10.21",
+      "destination": "wwwroot/lib/datatables/"
+    },
+    {
+      "library": "bootstrap@5.3.0",
+      "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
+      "library": "sweetalert2@11.7.11",
+      "destination": "wwwroot/lib/sweetalert2/"
+    },
+    {
+      "library": "animateCSS@1.2.2",
+      "destination": "wwwroot/lib/animateCSS/"
+    },
+    {
+      "library": "animate.css@4.1.1",
+      "destination": "wwwroot/lib/animate.css/"
+    },
+    {
+      "library": "bootbox.js@6.0.0",
+      "destination": "wwwroot/lib/bootbox.js/"
+    }
+  ]
+}
