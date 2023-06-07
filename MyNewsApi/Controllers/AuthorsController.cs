@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MyNewsApi.Data;
 using MyNewsApi.Dtos;
 using MyNewsApi.Models;
+using System.Runtime.InteropServices;
 
 namespace MyNewsApi.Controllers
 {
@@ -28,6 +29,22 @@ namespace MyNewsApi.Controllers
 
         }
 
+        [HttpGet("{name}")]
+        public async Task<IActionResult> GetByNameAsync(string name)
+        {
+            var author = await _context.Authors.SingleOrDefaultAsync(c => c.Name == name);
+
+            return Ok(author);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            var author = await _context.Authors.FindAsync(id);
+
+            return Ok(author);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateAsync(CreateAuthorDto authorDto)
         {
@@ -39,6 +56,8 @@ namespace MyNewsApi.Controllers
             return Ok(author);
 
         }
+
+
 
 
 

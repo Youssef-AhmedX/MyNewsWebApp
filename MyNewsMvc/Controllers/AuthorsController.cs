@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyNewsMvc.Models;
 using Newtonsoft.Json;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 
@@ -19,7 +20,7 @@ namespace MyNewsMvc.Controllers
 
         public IActionResult Index()
         {
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress+"/Authors").Result;
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Authors").Result;
 
             if (!response.IsSuccessStatusCode)
                 return View("_NotFound");
@@ -31,8 +32,9 @@ namespace MyNewsMvc.Controllers
             return View(AuthorsList);
         }
 
+        //Create Authors
+
         [HttpGet]
-        //[AjaxOnly]
         public IActionResult Create()
         {
             return PartialView("_Form");
@@ -45,7 +47,7 @@ namespace MyNewsMvc.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            AuthorDto authorDto = new() { Name =  model.Name };
+            AuthorDto authorDto = new() { Name = model.Name };
 
             string Data = JsonConvert.SerializeObject(authorDto);
             StringContent content = new StringContent(Data, Encoding.UTF8, "application/json");
@@ -60,15 +62,40 @@ namespace MyNewsMvc.Controllers
             return PartialView("_AuthorNewRow", AuthorView);
         }
 
+        //Edit Authors
 
-        public IActionResult IsExist(CategoryFormViewModel model)
+        [HttpGet]
+        //[AjaxOnly]
+        public IActionResult Edit(int Id)
         {
-            var Category = _context.Categories.SingleOrDefault(c => c.Name == model.Name);
-
-            var IsAllowed = Category is null || Category.Id == model.Id;
-
-
-            return Json(IsAllowed);
+            return PartialView("_Form");
         }
+
+
+        //Remote Function
+
+        public IActionResult IsExist(AuthorFormViewModel model)
+        {
+
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Authors/" + model.Name).Result;
+
+            if (!response.IsSuccessStatusCode)
+                return Json(false);
+
+            if(response.StatusCode == HttpStatusCode.OK)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                var Author = JsonConvert.DeserializeObject<AuthorFormViewModel>(data);
+
+                var IsAllowed = Author is null || Author.Id == model.Id;
+
+                return Json(IsAllowed);
+            }
+
+            return Json(true);
+
+        }
+
+
     }
 }
