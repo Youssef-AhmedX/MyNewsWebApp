@@ -57,7 +57,14 @@
         $(document).ready(function () {
             datatable = $('table').DataTable({
                 columnDefs: [
-                    { orderable: false, targets: 2 }
+                    {
+                        orderable: false,
+                        targets: 2
+                    },
+                    {
+                        defaultContent: "_",
+                        targets: "_all"
+                    }
                 ],
                 order: [[0, 'asc']],
             });

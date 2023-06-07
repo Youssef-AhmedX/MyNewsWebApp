@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyNewsApi.Dtos
 {
-    public class CreateAuthorDto 
+    public class AuthorDto 
     {
         public int Id { get; set; }
 

@@ -29,24 +29,32 @@ namespace MyNewsApi.Controllers
 
         }
 
-        [HttpGet("{name}")]
-        public async Task<IActionResult> GetByNameAsync(string name)
+        [HttpGet("GetByName")]
+        public async Task<IActionResult> GetByNameAsync(string Name)
         {
-            var author = await _context.Authors.SingleOrDefaultAsync(c => c.Name == name);
+
+            var author = await _context.Authors.SingleOrDefaultAsync(c => c.Name == Name);
+
+            if (author is null)
+                return NotFound();
 
             return Ok(author);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetById")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
+
             var author = await _context.Authors.FindAsync(id);
+
+            if (author is null)
+                return NotFound();
 
             return Ok(author);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(CreateAuthorDto authorDto)
+        public async Task<IActionResult> CreateAsync(AuthorDto authorDto)
         {
             Author author = new() { Name = authorDto.Name };
 
@@ -56,6 +64,42 @@ namespace MyNewsApi.Controllers
             return Ok(author);
 
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(int id,[FromBody]AuthorDto authorDto)
+        {
+
+            var author = await _context.Authors.FindAsync(id);
+
+            if (author is null)
+                return NotFound();
+
+            author.Name = authorDto.Name;
+
+            _context.SaveChanges();
+
+            return Ok(author);
+
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var author = await _context.Authors.FindAsync(id);
+
+            if (author is null)
+                return NotFound();
+
+            _context.Remove(author);
+            _context.SaveChanges();
+
+            return Ok(author);
+
+
+        }
+
+
 
 
 

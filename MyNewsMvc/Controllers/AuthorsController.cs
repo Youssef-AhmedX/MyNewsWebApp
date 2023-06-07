@@ -2,6 +2,7 @@
 using MyNewsMvc.Models;
 using Newtonsoft.Json;
 using System.Net;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 
@@ -50,7 +51,7 @@ namespace MyNewsMvc.Controllers
             AuthorDto authorDto = new() { Name = model.Name };
 
             string Data = JsonConvert.SerializeObject(authorDto);
-            StringContent content = new StringContent(Data, Encoding.UTF8, "application/json");
+            StringContent content = new(Data, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + "/Authors", content).Result;
 
@@ -65,37 +66,87 @@ namespace MyNewsMvc.Controllers
         //Edit Authors
 
         [HttpGet]
-        //[AjaxOnly]
-        public IActionResult Edit(int Id)
+        public IActionResult Edit(int id)
         {
-            return PartialView("_Form");
+
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Authors/GetById?id=" + id).Result;
+
+            if (!response.IsSuccessStatusCode)
+                return BadRequest();
+
+            string data = response.Content.ReadAsStringAsync().Result;
+            var Author = JsonConvert.DeserializeObject<AuthorFormViewModel>(data);
+
+
+            return PartialView("_Form", Author);
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(AuthorFormViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            AuthorDto authorDto = new() { Name = model.Name, Id = model.Id };
+
+            string Data = JsonConvert.SerializeObject(authorDto);
+            StringContent content = new(Data, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/Authors/" + model.Id, content).Result;
+
+            if (!response.IsSuccessStatusCode)
+                return BadRequest();
+
+            string data = response.Content.ReadAsStringAsync().Result;
+            var AuthorView = JsonConvert.DeserializeObject<AuthorViewModel>(data);
+
+
+            return PartialView("_AuthorNewRow", AuthorView);
+        }
+
+        //Delete Authors
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+
+            HttpResponseMessage response = _httpClient.DeleteAsync(_httpClient.BaseAddress + "/Authors/" + id).Result;
+
+            if (!response.IsSuccessStatusCode)
+                return BadRequest();
+
+            string data = response.Content.ReadAsStringAsync().Result;
+            var AuthorView = JsonConvert.DeserializeObject<AuthorViewModel>(data);
+
+            return Ok(AuthorView!.Name);
+        }
 
         //Remote Function
 
         public IActionResult IsExist(AuthorFormViewModel model)
         {
 
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Authors/" + model.Name).Result;
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Authors/GetByName?Name=" + model.Name).Result;
 
-            if (!response.IsSuccessStatusCode)
-                return Json(false);
+            if (response.StatusCode == HttpStatusCode.NotFound)
+                return Json(true);
 
-            if(response.StatusCode == HttpStatusCode.OK)
+            if (response.StatusCode == HttpStatusCode.OK)
             {
                 string data = response.Content.ReadAsStringAsync().Result;
                 var Author = JsonConvert.DeserializeObject<AuthorFormViewModel>(data);
 
-                var IsAllowed = Author is null || Author.Id == model.Id;
+                var IsAllowed = Author!.Id == model.Id;
 
                 return Json(IsAllowed);
             }
 
-            return Json(true);
-
+            return Json(false);
         }
-
 
     }
 }

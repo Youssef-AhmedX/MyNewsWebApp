@@ -2,7 +2,8 @@
 var newRow;
 var datatable;
 
-function showSuccessMessage(message = 'Saved Successfully') {
+function showSuccessMessage(message = 'Saved Successfully!') {
+
 
     Swal.fire({
         title: "Success",
@@ -61,6 +62,7 @@ function modalSubmitSuccess(row) {
 
 }
 
+
 function onModalComplete() {
 
     $('body :submit').removeAttr('disabled', 'disabled');
@@ -78,6 +80,11 @@ function select2func() {
     });
 }
 
+function deleteRow() {
+
+    datatable.row(rowUpdated).remove().draw()
+    rowUpdated = undefined;
+}
 
 function addNewRow(row) {
 
@@ -158,10 +165,18 @@ $(document).ready(function () {
                                 },
                                 success: function (row) {
 
-                                    rowUpdated = btn.parents('tr');
-                                    btn.parents('tr').removeClass('animate__animated animate__flash');
+                                    if (btn.data('is-deleted') == "true") {
 
-                                    modalSubmitSuccess(row)
+                                        rowUpdated = btn.parents('tr');
+                                        deleteRow()
+
+                                    }
+                                    else {
+                                        rowUpdated = btn.parents('tr');
+                                        btn.parents('tr').removeClass('animate__animated animate__flash');
+                                        modalSubmitSuccess(row)
+
+                                    }
                                     showSuccessMessage();
 
                                 },
