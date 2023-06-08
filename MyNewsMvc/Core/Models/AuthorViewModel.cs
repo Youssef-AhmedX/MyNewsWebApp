@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MyNewsMvc.Models
+namespace MyNewsMvc.Core.Models
 {
     public class AuthorViewModel
     {

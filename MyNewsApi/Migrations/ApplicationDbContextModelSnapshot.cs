@@ -265,13 +265,17 @@ namespace MyNewsApi.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CoverImgPath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("NewsContext")
+                    b.Property<string>("NewsContent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

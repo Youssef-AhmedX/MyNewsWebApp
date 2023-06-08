@@ -1,0 +1,107 @@
+﻿@model NewsFormViewModel
+
+@{
+    ViewData["Title"] = $"{(Model.Id.Equals(0) ? "Add" : "Edit")} News";
+}
+
+<div class="card shadow-sm border-primary mt-5 mb-3">
+    <div class="card-header bg-primary text-light h5 p-4">
+        <div class="row align-items-center">
+            <div class="col-6">
+                <i class="bi bi-vector-pen"></i>
+                <span class="ps-2">
+                    @(Model.Id.Equals(0) ? "Add" : "Edit") Book
+                </span>
+
+            </div>
+            <div class="col-6 text-end">
+                <a class="btn btn-sm btn-success" asp-controller="News" asp-action="Index">
+                    <i class="bi bi-arrow-left-circle"></i>
+                    Back To Books
+                </a>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="card-body text-secondary">
+        <form method="post" asp-controller="News" enctype="multipart/form-data">
+
+            @if (!Model.Id.Equals(0))
+            {
+                <input type="hidden" asp-for="Id" />
+
+            }
+
+            <div class="row mb-2 align-items-center">
+                <div class="col-md-8">
+                    <div class="form-floating mb-2">
+                        <input type="text" asp-for="Title" class="form-control" placeholder="Book Title" />
+                        <label asp-for="Title"></label>
+                    </div>
+                    <span asp-validation-for="Title" class="text-danger d-block "></span>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating mb-2">
+                        <input type="text" asp-for="PublicationDate" class="form-control js-daterangepicker" placeholder="Publishing Date" />
+                        <label asp-for="PublicationDate"></label>
+                    </div>
+                    <span asp-validation-for="PublicationDate" class="text-danger d-block"></span>
+
+                </div>
+
+            </div>
+            <div class="row mb-2 align-items-center">
+                <div class="col-md-6">
+                    <label asp-for="CoverImg" class="form-label"></label>
+                    <input asp-for="CoverImg" onchange="document.getElementById('img-thumbnail').src = window.URL.createObjectURL(this.files[0])" class="form-control form-control-sm" id="formFileLg" type="file" accept=".jpg,.jpeg,.png">
+                    <span asp-validation-for="CoverImg" class="text-danger d-block"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="mb-2" asp-for="AuthorId"></label>
+                    <select class="form-select form-select-lg js-select2" data-placeholder="Select Author Name" asp-for="AuthorId" asp-items="Model.Authors">
+                        <option value="">Select Author Name</option>
+                    </select>
+                    <span asp-validation-for="AuthorId" class="text-danger d-block"></span>
+
+                </div>
+
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-md-6 text-center mt-4">
+                    <img src="/Images/no-image-available.jpg" style="max-width: 300px;max-height: 300px;" id="img-thumbnail" class="img-thumbnail shadow" alt="...">
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-2">
+                        <label asp-for="NewsContent" class="form-label"></label>
+                        <textarea class="form-control" style="height: 300px;" asp-for="NewsContent"></textarea>
+                    </div>
+                    <span asp-validation-for="NewsContent" class="text-danger d-block"></span>
+                </div>
+            </div>
+            <div class="row mb-2 mt-2 align-items-end justify-content-between">
+                <div class="col-md-auto">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="indicator-label">
+                            Save
+                        </span>
+                        <span class="indicator-progress d-none">
+                            Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

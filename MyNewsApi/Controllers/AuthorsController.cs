@@ -36,7 +36,7 @@ namespace MyNewsApi.Controllers
             var author = await _context.Authors.SingleOrDefaultAsync(c => c.Name == Name);
 
             if (author is null)
-                return NotFound();
+                return NoContent();
 
             return Ok(author);
         }
@@ -48,7 +48,7 @@ namespace MyNewsApi.Controllers
             var author = await _context.Authors.FindAsync(id);
 
             if (author is null)
-                return NotFound();
+                return NoContent();
 
             return Ok(author);
         }

@@ -9,10 +9,10 @@ namespace MyNewsApi.Models
         public int Id { get; set; }
 
 
-        [MaxLength(length: 500)]
+        [MaxLength(500)]
         public string Title { get; set; } = null!;
-
-        public string NewsContext { get; set; } = null!;
+        public string NewsContent { get; set; } = null!;
+        public string CoverImgPath { get; set; } = null!;
 
         public DateTime PublicationDate { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;

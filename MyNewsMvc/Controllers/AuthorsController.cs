@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MyNewsMvc.Models;
+﻿using MyNewsMvc.Core.Dtos;
 using Newtonsoft.Json;
 using System.Net;
-using System.Reflection;
-using System.Security.Claims;
 using System.Text;
 
 namespace MyNewsMvc.Controllers
@@ -71,7 +68,7 @@ namespace MyNewsMvc.Controllers
 
             HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Authors/GetById?id=" + id).Result;
 
-            if (!response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.NoContent)
                 return BadRequest();
 
             string data = response.Content.ReadAsStringAsync().Result;
@@ -132,7 +129,7 @@ namespace MyNewsMvc.Controllers
 
             HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Authors/GetByName?Name=" + model.Name).Result;
 
-            if (response.StatusCode == HttpStatusCode.NotFound)
+            if (response.StatusCode == HttpStatusCode.NoContent)
                 return Json(true);
 
             if (response.StatusCode == HttpStatusCode.OK)

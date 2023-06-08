@@ -1,0 +1,78 @@
+﻿@model IEnumerable<NewsViewModel>
+
+@{
+    ViewData["Title"] = "Authors";
+}
+
+
+<div class="card shadow-sm border-primary mt-5 mb-3">
+    <div class="card-header bg-primary text-light h5 p-4">
+        <div class="row align-items-center">
+            <div class="col-6">
+                <i class="bi bi-vector-pen"></i>
+                <span class="ps-2">
+                    News
+                </span>
+
+            </div>
+            <div class="col-6 text-end">
+                <a class="btn btn-success" asp-controller="News" asp-action="Create" >Add News</a>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="card-body text-secondary">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th class="text-center">Publication Date</th>
+                    <th class="text-center">Author Name</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var news in Model)
+                {
+                    <tr>
+                        <td>
+                            @news.Title
+                        </td>
+                        <td class="text-center text-@(news.PublicationDate > DateTime.Now ? "warning" : "success")">@news.PublicationDate.ToString("d/M/yy")</td>
+                        <td class="text-center">@news.Author.Name</td>
+                        <td class="text-center">
+                            <a asp-controller="" asp-action="" asp-route-itemid="" class=" btn btn-sm btn-outline btn-outline-primary btn-active-light-primary">
+                                <i class="bi bi-pencil-square"></i>
+                                Details
+                            </a>
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+            datatable = $('table').DataTable({
+                columnDefs: [
+                    {
+                        orderable: false,
+                        targets: 3
+                    },
+                ],
+                order: [[0, 'asc']],
+            });
+        });
+    </script>
+}
+

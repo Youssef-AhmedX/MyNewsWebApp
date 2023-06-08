@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MyNewsMvc.Models;
-using System.Diagnostics;
+﻿
 
 namespace MyNewsMvc.Controllers
 {

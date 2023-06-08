@@ -112,7 +112,7 @@ $(document).ready(function () {
 
     ////select2
 
-    //select2func();
+    select2func();
 
     //Disable Submit Button
 
@@ -126,13 +126,12 @@ $(document).ready(function () {
 
     //DateRangePicker
 
-    //$('.js-daterangepicker').daterangepicker({
-    //    singleDatePicker: true,
-    //    showDropdowns: true,
-    //    autoApply: true,
-    //    drops: 'auto',
-    //    maxDate: new Date()
-    //});
+    $('.js-daterangepicker').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        autoApply: true,
+        drops: 'auto',
+    });
 
 
     $('body').delegate('.js-change-btn', 'click', function () {
