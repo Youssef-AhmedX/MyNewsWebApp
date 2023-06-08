@@ -12,5 +12,8 @@ namespace MyNewsApi.Models
         [MaxLength(20)]
         public string Name { get; set; } = null!;
 
+        public ICollection<News> news { get; set; } = new List<News>();
+
+
     }
 }

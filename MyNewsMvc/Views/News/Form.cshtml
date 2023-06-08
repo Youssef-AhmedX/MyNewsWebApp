@@ -10,14 +10,14 @@
             <div class="col-6">
                 <i class="bi bi-vector-pen"></i>
                 <span class="ps-2">
-                    @(Model.Id.Equals(0) ? "Add" : "Edit") Book
+                    @(Model.Id.Equals(0) ? "Add" : "Edit") News
                 </span>
 
             </div>
             <div class="col-6 text-end">
-                <a class="btn btn-sm btn-success" asp-controller="News" asp-action="Index">
-                    <i class="bi bi-arrow-left-circle"></i>
-                    Back To Books
+                <a class="btn btn-success" asp-controller="News" asp-action="Index">
+                    <i class="bi bi-arrow-left-circle m-2"></i>
+                    Back To News
                 </a>
             </div>
         </div>
@@ -87,6 +87,7 @@
                     <button type="submit" class="btn btn-primary">
                         <span class="indicator-label">
                             Save
+                            <i class="bi bi-check-circle ms-2"></i>
                         </span>
                         <span class="indicator-progress d-none">
                             Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>

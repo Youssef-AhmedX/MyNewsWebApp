@@ -23,7 +23,6 @@ namespace MyNewsMvc.Controllers
             if (!response.IsSuccessStatusCode)
                 return View("_NotFound");
 
-
             string Data = response.Content.ReadAsStringAsync().Result;
             var AuthorsList = JsonConvert.DeserializeObject<IEnumerable<AuthorViewModel>>(Data);
 
@@ -35,7 +34,8 @@ namespace MyNewsMvc.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return PartialView("_Form");
+            AuthorFormViewModel authorForm = new();
+            return PartialView("_Form", authorForm);
         }
 
         [HttpPost]

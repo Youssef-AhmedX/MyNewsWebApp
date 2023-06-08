@@ -23,7 +23,10 @@ namespace MyNewsApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            var authors = await _context.Authors.AsNoTracking().ToListAsync();
+            var authors = await _context.Authors
+                .Include(a => a.news)
+                .Select(a => new { a.Id,a.Name, NewsCount = a.news.Count() })
+                .AsNoTracking().ToListAsync();
 
             return Ok(authors);
 
@@ -46,9 +49,6 @@ namespace MyNewsApi.Controllers
         {
 
             var author = await _context.Authors.FindAsync(id);
-
-            if (author is null)
-                return NoContent();
 
             return Ok(author);
         }
