@@ -4,8 +4,8 @@
     ViewData["Title"] = "Welcome To MyNews";
 }
 
-<div class="container" style="margin-top:130px;margin-bottom:110px">
-    <div class="row align-items-center" style="margin-bottom:90px">
+<div class="container" style="margin-top:0px;margin-bottom:110px;">
+    <div class="row align-items-center" style="padding-top:90px;margin-bottom:110px;">
         <div class="col-md-6 text-center text-md-end">
             <h1 class="display-4">Welcome To </h1>
         </div>
@@ -13,7 +13,6 @@
             <img src="/Images/MyNewsLogo.png" />
         </div>
     </div>
-
     <div class="card mt-4 shadow">
         <div class="card-body">
             <table class="table">
@@ -32,11 +31,10 @@
                                         <div class="col-md-3 p-3 text-center">
                                             <a asp-controller="MyNews" asp-action="details" asp-route-id="@news.Id">
                                                 <img src="/Images/NewsCoverImgs/@news.CoverImgPath" class="card-img-top border rounded p-2 ms-2 me-2" style="max-width:250px;max-height:150px;object-fit: contain" alt="...">
-
                                             </a>
                                         </div>
                                         <div class="card-body col-md-8 ms-2">
-                                            <h5 class="card-title   me-5 mb-1">
+                                            <h5 class="card-title me-5 mb-1">
                                                 <a asp-controller="MyNews" asp-action="details" asp-route-id="@news.Id">
                                                     <p class="fw-bold text-primary mb-0">
                                                         @news.Title

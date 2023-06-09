@@ -3,27 +3,66 @@
 @{
     ViewData["Title"] = "News";
 }
+<div class="card shadow-lg mb-5">
+    <div class="card-header bg-primary text-light h5 p-4">
+        <div class="row align-items-center">
+            <h3 class="col-6 mb-0">
+                <i class="bi bi-newspaper"></i>
+                <span class="ps-2">
+                    News Details
+                </span>
 
-<div>
-    <p>@Model.Title</p>
-    <p>@Model.NewsContent</p>
-    <p>@Model.PublicationDate</p>
-    <p>@Model.AuthorName</p>
+            </h3>
+            <div class="col-6 text-end">
+                <div class="me-4 ms-4 mt-3 ">
+                    <a asp-controller="News" asp-action="Index" class="btn btn-success">
+                        <i class="bi bi-arrow-left-circle"></i>
+                        Back to News
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="me-4 ms-4 mt-3">
+        <img src="/Images/NewsCoverImgs/@Model.CoverImgPath" style="max-height:300px;object-fit:contain" class="card-img-top border rounded p-3 bg-light" alt="...">
+    </div>
+
+    <div class="card-body me-4 ms-4">
+        <h1 class="card-title fw-bold mb-3">@Model.Title</h1>
+        <div class="mb-3">
+            <span class="badge rounded-pill bg-primary mb-3">By: @Model.AuthorName</span>
+            <span class="badge rounded-pill bg-success mb-3">Publication Date: @Model.PublicationDate.ToString("d/M/yyyy")</span>
+            <span class="badge rounded-pill bg-secondary mb-3">Creation Date: @Model.CreationDate.ToString("d/M/yyyy h:m:ss tt")</span>
+        </div>
+        <div class="mb-5">
+            <p class="card-text">@Model.NewsContent</p>
+        </div>
+        <div class="text-end">
+            <div class="m-4 ">
+                <a asp-controller="News" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                    <i class="bi bi-pencil-square"></i>
+                    Edit
+                </a>
+                <a data-url="/News/Delete/@Model.Id" data-message="Are You Sure That You Want To Delete This News" data-title="Delete News" data-is-deleted="redirect" href="javascript:;" class="js-change-btn btn btn-danger">
+
+                    <i class="bi bi-x-circle"></i>
+                    <span class="js-btn-text">
+                        Delete
+                    </span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
 </div>
-<img src="/Images/NewsCoverImgs/@Model.CoverImgPath" style="max-width:300px;" />
 
-<a asp-controller="News" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline btn-outline-primary btn-active-light-primary">
-    <i class="bi bi-pencil-square"></i>
-    Edit
-</a>
 
-<a data-url="/News/Delete/@Model.Id" data-message="Are You Sure That You Want To Delete This News" data-title="Delete News" data-is-deleted="redirect" href="javascript:;" class="js-change-btn btn btn-outline btn-outline-danger btn-active-light-danger">
-
-    <i class="bi bi-x-circle"></i>
-    <span class="js-btn-text">
-        Delete
-    </span>
-</a>
 
 @Html.AntiForgeryToken()
 
