@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace MyNewsApi.Models
 {
     [Index(nameof(Title),nameof(AuthorId), IsUnique = true)]
-    public class News : BaseModel
+    public class News 
     {
         public int Id { get; set; }
 

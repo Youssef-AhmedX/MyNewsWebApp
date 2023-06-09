@@ -1,0 +1,31 @@
+﻿@model NewsViewModel
+
+@{
+    ViewData["Title"] = "News";
+}
+
+<div>
+    <p>@Model.Title</p>
+    <p>@Model.NewsContent</p>
+    <p>@Model.PublicationDate</p>
+    <p>@Model.AuthorName</p>
+</div>
+<img src="/Images/NewsCoverImgs/@Model.CoverImgPath" style="max-width:300px;" />
+
+<a asp-controller="News" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline btn-outline-primary btn-active-light-primary">
+    <i class="bi bi-pencil-square"></i>
+    Edit
+</a>
+
+<a data-url="/News/Delete/@Model.Id" data-message="Are You Sure That You Want To Delete This News" data-title="Delete News" data-is-deleted="redirect" href="javascript:;" class="js-change-btn btn btn-outline btn-outline-danger btn-active-light-danger">
+
+    <i class="bi bi-x-circle"></i>
+    <span class="js-btn-text">
+        Delete
+    </span>
+</a>
+
+@Html.AntiForgeryToken()
+
+
+

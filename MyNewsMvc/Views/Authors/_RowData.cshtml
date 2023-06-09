@@ -15,7 +15,7 @@
         <i class="bi bi-pencil-square"></i>
         Edit
     </a>
-    <a data-url="/Authors/Delete/@Model.Id" data-message="Are You Sure That You Want To Delete Author" data-title="Change Author Status" data-is-deleted="true" href="javascript:;" class="js-change-btn btn btn-outline btn-outline-danger btn-active-light-danger">
+    <a data-url="/Authors/Delete/@Model.Id" data-message="Are You Sure That You Want To Delete Author" data-title="Change Author Status" data-is-deleted="true" href="javascript:;" class="js-change-btn btn btn-outline btn-outline-danger btn-active-light-danger @(Model.NewsCount > 0 ? "disabled" : string.Empty)">
 
         <i class="bi bi-x-circle"></i>
         <span class="js-btn-text">

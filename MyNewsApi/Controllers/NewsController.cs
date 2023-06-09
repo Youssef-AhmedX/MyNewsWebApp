@@ -24,7 +24,7 @@ namespace MyNewsApi.Controllers
         {
             var news = await _context.News
                 .Include(n => n.Author)
-                .Select(n => new { n.Id, n.Title, n.NewsContent, n.CoverImgPath, n.PublicationDate, n.CreationDate, AuthorName = n.Author!.Name })
+                .Select(n => new { n.Id, n.Title, n.NewsContent, n.CoverImgPath, n.PublicationDate, n.CreationDate, AuthorName = n.Author!.Name,})
                 .AsNoTracking().ToListAsync();
 
             return Ok(news);
@@ -35,7 +35,11 @@ namespace MyNewsApi.Controllers
         public async Task<IActionResult> GetByIdAsync(int id)
         {
 
-            var news = await _context.News.FindAsync(id);
+            var news = await _context.News
+                .Include(n => n.Author)
+                .Select(n => new { n.Id, n.Title, n.NewsContent, n.CoverImgPath, n.PublicationDate, n.CreationDate, AuthorName = n.Author!.Name, n.AuthorId })
+                .AsNoTracking()
+                .FirstOrDefaultAsync(n => n.Id == id);
 
             return Ok(news);
         }
@@ -74,6 +78,7 @@ namespace MyNewsApi.Controllers
             news.PublicationDate = newsDto.PublicationDate;
             news.NewsContent = newsDto.NewsContent;
             news.CoverImgPath = newsDto.CoverImgPath;
+            news.AuthorId = newsDto.AuthorId;
 
 
             _context.SaveChanges();
@@ -82,22 +87,21 @@ namespace MyNewsApi.Controllers
 
         }
 
-        [HttpPut("ChangeStatus")]
-        public async Task<IActionResult> ChangeStatusAsync(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-
             var news = await _context.News.FindAsync(id);
 
             if (news is null)
                 return NotFound();
 
-            news.IsDeleted = !news.IsDeleted;
-
-
+            _context.Remove(news);
             _context.SaveChanges();
 
             return Ok(news);
 
+
         }
+
     }
 }

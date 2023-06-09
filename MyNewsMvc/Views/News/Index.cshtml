@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<NewsViewModel>
 
 @{
-    ViewData["Title"] = "Authors";
+    ViewData["Title"] = "News";
 }
 
 
@@ -38,14 +38,14 @@
                 @foreach (var news in Model)
                 {
                     <tr class="text-@(news.PublicationDate > DateTime.Now ? "warning" : "success")">
-                        <td>
+                        <td class="fw-bold">
                             @news.Title
                         </td>
                         <td class="text-center ">@news.PublicationDate.ToString("d/M/yyyy")</td>
                         <td class="text-center ">@news.CreationDate.ToString("d/M/yyyy") <br /> @news.CreationDate.ToString("h:m:s tt")</td>
                         <td class="text-center">@news.AuthorName</td>
                         <td class="text-center">
-                            <a asp-controller="News" asp-action="details" asp-route-itemid="@news.Id" class=" btn btn-sm btn-outline btn-outline-primary btn-active-light-primary">
+                            <a asp-controller="News" asp-action="details" asp-route-id="@news.Id" class=" btn btn-sm btn-outline btn-outline-primary btn-active-light-primary">
                                 <i class="bi bi-pencil-square"></i>
                                 Details
                             </a>

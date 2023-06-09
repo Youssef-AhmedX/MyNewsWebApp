@@ -8,7 +8,7 @@
     <div class="card-header bg-primary text-light h5 p-4">
         <div class="row align-items-center">
             <div class="col-6">
-                <i class="bi bi-vector-pen"></i>
+                <i class="bi bi-newspaper"></i>
                 <span class="ps-2">
                     @(Model.Id.Equals(0) ? "Add" : "Edit") News
                 </span>
@@ -31,6 +31,7 @@
             @if (!Model.Id.Equals(0))
             {
                 <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="CoverImgPath" />
 
             }
 
@@ -72,7 +73,7 @@
 
             <div class="row mb-2">
                 <div class="col-md-6 text-center mt-4">
-                    <img src="/Images/no-image-available.jpg" style="max-width: 300px;max-height: 300px;" id="img-thumbnail" class="img-thumbnail shadow" alt="...">
+                    <img src="@(Model.Id.Equals(0) ? "/Images/no-image-available.jpg" : $"/Images/NewsCoverImgs/{@Model.CoverImgPath}")" style="max-width: 300px;max-height: 300px;" id="img-thumbnail" class="img-thumbnail shadow" alt="...">
                 </div>
                 <div class="col-md-6">
                     <div class="mb-2">

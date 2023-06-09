@@ -163,20 +163,15 @@ $(document).ready(function () {
                                     '__RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
                                 },
                                 success: function (row) {
-
-                                    if (btn.data('is-deleted') == "true") {
-
-                                        rowUpdated = btn.parents('tr');
-                                        deleteRow()
-
+                                    if (btn.data('is-deleted') === 'redirect') {
+                                        window.location.replace("/News/Index");
                                     }
                                     else {
                                         rowUpdated = btn.parents('tr');
-                                        btn.parents('tr').removeClass('animate__animated animate__flash');
-                                        modalSubmitSuccess(row)
-
+                                        deleteRow()
+                                        showSuccessMessage();
                                     }
-                                    showSuccessMessage();
+
 
                                 },
                                 error: function (message) {
@@ -214,7 +209,6 @@ $(document).ready(function () {
                 modal.find('.modal-title').text(btn.data('title'));
                 modal.find('.modal-body').html(form);
                 $.validator.unobtrusive.parse(modal);
-                //select2func()
                 modal.modal('show');
 
 

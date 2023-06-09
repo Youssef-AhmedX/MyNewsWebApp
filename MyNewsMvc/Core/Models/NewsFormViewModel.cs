@@ -17,8 +17,9 @@ namespace MyNewsMvc.Core.Models
         [Display(Name = "News Context")]
         public string NewsContent { get; set; } = null!;
 
+        [RequiredIf("Id == 0")]
         [Display(Name = "News Cover Image")]
-        public IFormFile CoverImg { get; set; } = null!;
+        public IFormFile? CoverImg { get; set; }
 
 
         [Display(Name = "Publication Date")]
@@ -29,5 +30,6 @@ namespace MyNewsMvc.Core.Models
         public int AuthorId { get; set; }
         public IEnumerable<SelectListItem>? Authors { get; set; }
 
+        public string? CoverImgPath { get; set; }
     }
 }

@@ -110,6 +110,16 @@ namespace MyNewsMvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
+            HttpResponseMessage Getresponse = _httpClient.GetAsync(_httpClient.BaseAddress + "/Authors/GetById?id=" + id).Result;
+
+            if (!Getresponse.IsSuccessStatusCode || Getresponse.StatusCode == HttpStatusCode.NoContent)
+                return BadRequest();
+
+            string Getdata = Getresponse.Content.ReadAsStringAsync().Result;
+            var Author = JsonConvert.DeserializeObject<AuthorViewModel>(Getdata);
+
+            if (Author!.NewsCount > 0)
+                return BadRequest();
 
             HttpResponseMessage response = _httpClient.DeleteAsync(_httpClient.BaseAddress + "/Authors/" + id).Result;
 
