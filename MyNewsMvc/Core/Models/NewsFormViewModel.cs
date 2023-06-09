@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MyNewsMvc.Core.Consts;
 using System.ComponentModel.DataAnnotations;
 using UoN.ExpressiveAnnotations.NetCore.Attributes;
 
@@ -9,15 +10,14 @@ namespace MyNewsMvc.Core.Models
     {
         public int Id { get; set; }
 
-        [MaxLength(500)]
-        //[Remote("IsExist", "News", AdditionalFields = "Id,AuthorId")]
+        [MaxLength(500, ErrorMessage = Errors.MaxLengthError)]
         [Display(Name = "News Title")]
         public string Title { get; set; } = null!;
 
         [Display(Name = "News Context")]
         public string NewsContent { get; set; } = null!;
 
-        [RequiredIf("Id == 0")]
+        [RequiredIf("Id == 0", ErrorMessage = "You Must Insert Image!")]
         [Display(Name = "News Cover Image")]
         public IFormFile? CoverImg { get; set; }
 
@@ -25,7 +25,6 @@ namespace MyNewsMvc.Core.Models
         [Display(Name = "Publication Date")]
         public DateTime PublicationDate { get; set; } = DateTime.Now;
 
-        //[Remote("IsExist", "News", AdditionalFields = "Id,Title")]
         [Display(Name = "News Author")]
         public int AuthorId { get; set; }
         public IEnumerable<SelectListItem>? Authors { get; set; }

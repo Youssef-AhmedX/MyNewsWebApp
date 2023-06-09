@@ -101,14 +101,6 @@ function addNewRow(row) {
 
 $(document).ready(function () {
 
-    //SignOut
-
-    $('.js-logOut').on('click', function () {
-
-        $('.js-logOutForm').submit();
-
-    });
-
 
     ////select2
 
@@ -116,7 +108,7 @@ $(document).ready(function () {
 
     //Disable Submit Button
 
-    $('form').not('.js-logOutForm').on('submit', function () {
+    $('form').on('submit', function () {
 
         var isValid = $(this).valid();
 

@@ -9,9 +9,9 @@ namespace MyNewsMvc.Core.Models
 
         public int Id { get; set; }
 
-        [RegularExpression(RegexPatterns.CharactersOnly_Eng)]
-        [StringLength(20, MinimumLength = 3)]
-        [Remote("IsExist", "Authors", AdditionalFields = "Id")]
+        [RegularExpression(RegexPatterns.CharactersOnly_Eng,ErrorMessage = Errors.EngCharactersOnly)]
+        [StringLength(20, MinimumLength = 3,ErrorMessage = Errors.MaxMinLengthError)]
+        [Remote("IsExist", "Authors", AdditionalFields = "Id",ErrorMessage =Errors.IsExistError)]
         [Display(Name = "Author Name")]
         public string Name { get; set; } = null!;
     }

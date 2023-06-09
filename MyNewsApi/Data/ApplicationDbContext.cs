@@ -13,5 +13,19 @@ namespace MyNewsApi.Data
 
         public DbSet<News> News { get; set; }
         public DbSet<Author> Authors { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+
+            builder.Entity<Author>()
+                .HasMany(a => a.news)
+                .WithOne(n => n.Author)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            base.OnModelCreating(builder);
+
+        }
     }
 }

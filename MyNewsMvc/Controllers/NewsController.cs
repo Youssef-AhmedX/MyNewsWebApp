@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MyNewsMvc.Core.Dtos;
+using MyNewsMvc.Core.Models;
 using Newtonsoft.Json;
 using System.Net;
+using System.Reflection;
 using System.Text;
 
 namespace MyNewsMvc.Controllers
@@ -210,10 +213,25 @@ namespace MyNewsMvc.Controllers
         public IActionResult Delete(int id)
         {
 
+            HttpResponseMessage Getresponse = _httpClient.GetAsync(_httpClient.BaseAddress + "/News/GetById?id=" + id).Result;
+
+            if (!Getresponse.IsSuccessStatusCode || Getresponse.StatusCode == HttpStatusCode.NoContent)
+                return BadRequest();
+
+            string Getdata = Getresponse.Content.ReadAsStringAsync().Result;
+            var Author = JsonConvert.DeserializeObject<NewsViewModel>(Getdata);
+
+            if (Author is null)
+                return BadRequest();
+
             HttpResponseMessage response = _httpClient.DeleteAsync(_httpClient.BaseAddress + "/News/" + id).Result;
 
             if (!response.IsSuccessStatusCode)
                 return BadRequest();
+
+            var OldImgPath = Path.Combine($"{_webHostEnvironment.WebRootPath}/Images/NewsCoverImgs", Author.CoverImgPath);
+            if (System.IO.File.Exists(OldImgPath))
+                System.IO.File.Delete(OldImgPath);
 
             return Ok();
         }
