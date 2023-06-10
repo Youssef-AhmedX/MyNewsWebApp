@@ -20,7 +20,7 @@ namespace MyNewsMvc.Controllers
 
         public IActionResult Index()
         {
-            HttpResponseMessage NewsResponse = _httpClient.GetAsync(_httpClient.BaseAddress + "/News").Result;
+            HttpResponseMessage NewsResponse = _httpClient.GetAsync(_httpClient.BaseAddress + "/News/GetAllPanel").Result;
 
             if (!NewsResponse.IsSuccessStatusCode)
                 return View("_NotFound");

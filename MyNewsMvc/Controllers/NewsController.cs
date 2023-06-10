@@ -28,7 +28,7 @@ namespace MyNewsMvc.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/News").Result;
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/News/GetAllPanel").Result;
 
             if (!response.IsSuccessStatusCode)
                 return View("_NotFound");
@@ -43,7 +43,7 @@ namespace MyNewsMvc.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/News/GetById?id=" + id).Result;
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/News/GetByIdPanel?id=" + id).Result;
 
             if (!response.IsSuccessStatusCode)
                 return View("_NotFound");

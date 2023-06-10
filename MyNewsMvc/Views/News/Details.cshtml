@@ -36,7 +36,7 @@
         <h1 class="card-title fw-bold mb-3">@Model.Title</h1>
         <div class="mb-3">
             <span class="badge rounded-pill bg-primary mb-3">By: @Model.AuthorName</span>
-            <span class="badge rounded-pill bg-success mb-3">Publication Date: @Model.PublicationDate.ToString("d/M/yyyy")</span>
+            <span class="badge rounded-pill bg-@(Model.PublicationDate > DateTime.Now ? "warning" : "success") mb-3">Publication Date: @Model.PublicationDate.ToString("d/M/yyyy")</span>
             <span class="badge rounded-pill bg-secondary mb-3">Creation Date: @Model.CreationDate.ToString("d/M/yyyy h:m:ss tt")</span>
         </div>
         <div class="mb-5">
