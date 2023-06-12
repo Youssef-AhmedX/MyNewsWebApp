@@ -117,12 +117,14 @@ $(document).ready(function () {
     });
 
     //DateRangePicker
-
     $('.js-daterangepicker').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         autoApply: true,
         drops: 'auto',
+        locale: {
+            format: 'DD/MM/YYYY'
+        }
     });
 
 

@@ -37,6 +37,11 @@ namespace MyNewsMvc.Controllers
             string Data = response.Content.ReadAsStringAsync().Result;
             var NewsList = JsonConvert.DeserializeObject<IEnumerable<NewsViewModel>>(Data);
 
+            if (NewsList is null)
+                return View();
+
+            NewsList = NewsList.OrderByDescending(n => n.PublicationDate).ToList();
+
             return View(NewsList);
         }
 
@@ -71,6 +76,24 @@ namespace MyNewsMvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(NewsFormViewModel model)
         {
+            if (model.CoverImg is not null)
+            {
+                var ImgExtension = Path.GetExtension(model.CoverImg.FileName);
+
+                if (!_allowedExtensions.Contains(ImgExtension))
+                {
+                    ModelState.AddModelError(nameof(model.PublicationDate), "Only .jpg,.jpeg,.png are allowed!");
+                    return View("Form", InitialNewsForm(model));
+                }
+
+                if (model.CoverImgPath is not null && model.CoverImg is not null)
+                        DeleteImg(model.CoverImgPath);
+
+                var ImageName = AddGetImgPath(ImgExtension, model.CoverImg!);
+
+                model.CoverImgPath = ImageName;
+            }
+
             if (!ModelState.IsValid)
                 return View("Form", InitialNewsForm(model));
 
@@ -82,29 +105,13 @@ namespace MyNewsMvc.Controllers
             }
 
 
-            var ImgExtension = Path.GetExtension(model.CoverImg!.FileName);
-
-            if (!_allowedExtensions.Contains(ImgExtension))
-            {
-                ModelState.AddModelError(nameof(model.PublicationDate), "Only .jpg,.jpeg,.png are allowed!");
-                return View("Form", InitialNewsForm(model));
-            }
-
-            var ImageName = $"{Guid.NewGuid()}{ImgExtension}";
-            var ImagePath = Path.Combine($"{_webHostEnvironment.WebRootPath}/Images/NewsCoverImgs", ImageName);
-
-            using var stream = System.IO.File.Create(ImagePath);
-            model.CoverImg.CopyTo(stream);
-
-
             NewsDto newsDto = new()
             {
                 Title = model.Title,
                 NewsContent = model.NewsContent,
                 PublicationDate = model.PublicationDate,
                 AuthorId = model.AuthorId,
-                CoverImgPath = ImageName,
-
+                CoverImgPath = model.CoverImgPath!,
             };
 
             string Data = JsonConvert.SerializeObject(newsDto);
@@ -146,6 +153,24 @@ namespace MyNewsMvc.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(NewsFormViewModel model)
         {
+            if (model.CoverImg is not null)
+            {
+                var ImgExtension = Path.GetExtension(model.CoverImg.FileName);
+
+                if (!_allowedExtensions.Contains(ImgExtension))
+                {
+                    ModelState.AddModelError(nameof(model.PublicationDate), "Only .jpg,.jpeg,.png are allowed!");
+                    return View("Form", InitialNewsForm(model));
+                }
+
+                if (model.CoverImgPath is not null && model.CoverImg is not null)
+                    DeleteImg(model.CoverImgPath);
+
+                var ImageName = AddGetImgPath(ImgExtension, model.CoverImg!);
+
+                model.CoverImgPath = ImageName;
+            }
+
             if (!ModelState.IsValid)
                 return BadRequest();
 
@@ -161,35 +186,8 @@ namespace MyNewsMvc.Controllers
                 NewsContent = model.NewsContent,
                 PublicationDate = model.PublicationDate,
                 AuthorId = model.AuthorId,
+                CoverImgPath = model.CoverImgPath!
             };
-
-            if(!(model.CoverImg is null))
-            {
-                var ImgExtension = Path.GetExtension(model.CoverImg!.FileName);
-
-                if (!_allowedExtensions.Contains(ImgExtension))
-                {
-                    ModelState.AddModelError(nameof(model.PublicationDate), "Only .jpg,.jpeg,.png are allowed!");
-                    return View("Form", InitialNewsForm(model));
-                }
-
-                var OldImgPath = Path.Combine($"{_webHostEnvironment.WebRootPath}/Images/NewsCoverImgs", model.CoverImgPath!);
-                if(System.IO.File.Exists(OldImgPath)) 
-                    System.IO.File.Delete(OldImgPath);
-
-                var ImageName = $"{Guid.NewGuid()}{ImgExtension}";
-                var ImagePath = Path.Combine($"{_webHostEnvironment.WebRootPath}/Images/NewsCoverImgs", ImageName);
-
-                using var stream = System.IO.File.Create(ImagePath);
-                model.CoverImg.CopyTo(stream);
-
-                newsDto.CoverImgPath = ImageName;
-            }
-            else
-            {
-                newsDto.CoverImgPath = model.CoverImgPath!;
-
-            }
 
             string Data = JsonConvert.SerializeObject(newsDto);
             StringContent content = new(Data, Encoding.UTF8, "application/json");
@@ -219,9 +217,9 @@ namespace MyNewsMvc.Controllers
                 return BadRequest();
 
             string Getdata = Getresponse.Content.ReadAsStringAsync().Result;
-            var Author = JsonConvert.DeserializeObject<NewsViewModel>(Getdata);
+            var news = JsonConvert.DeserializeObject<NewsViewModel>(Getdata);
 
-            if (Author is null)
+            if (news is null)
                 return BadRequest();
 
             HttpResponseMessage response = _httpClient.DeleteAsync(_httpClient.BaseAddress + "/News/" + id).Result;
@@ -229,12 +227,12 @@ namespace MyNewsMvc.Controllers
             if (!response.IsSuccessStatusCode)
                 return BadRequest();
 
-            var OldImgPath = Path.Combine($"{_webHostEnvironment.WebRootPath}/Images/NewsCoverImgs", Author.CoverImgPath);
-            if (System.IO.File.Exists(OldImgPath))
-                System.IO.File.Delete(OldImgPath);
+            DeleteImg(news.CoverImgPath);
 
             return Ok();
         }
+
+        //private fuctions
 
         private NewsFormViewModel InitialNewsForm(NewsFormViewModel? Model = null)
         {
@@ -253,10 +251,28 @@ namespace MyNewsMvc.Controllers
             if (AuthorsList is null)
                 return NewsFormView;
 
-            NewsFormView.Authors = AuthorsList.Select(a => new SelectListItem { Text = a.Name, Value = a.Id.ToString() });
+            NewsFormView.Authors = AuthorsList.OrderBy(a => a.Name).Select(a => new SelectListItem { Text = a.Name, Value = a.Id.ToString() });
 
             return NewsFormView;
 
+        }
+
+        private void DeleteImg (string ImgPath)
+        {
+            var OldImgPath = Path.Combine($"{_webHostEnvironment.WebRootPath}/Images/NewsCoverImgs", ImgPath);
+            if (System.IO.File.Exists(OldImgPath))
+                System.IO.File.Delete(OldImgPath);
+        }
+
+        private string AddGetImgPath(string ImgExtension, IFormFile CoverImg)
+        {
+            var ImageName = $"{Guid.NewGuid()}{ImgExtension}";
+            var ImagePath = Path.Combine($"{_webHostEnvironment.WebRootPath}/Images/NewsCoverImgs", ImageName);
+
+            using var stream = System.IO.File.Create(ImagePath);
+            CoverImg.CopyTo(stream);
+
+            return ImageName;
         }
 
     }

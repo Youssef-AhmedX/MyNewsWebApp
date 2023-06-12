@@ -10,7 +10,6 @@ namespace MyNewsApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class NewsController : ControllerBase
     {
 

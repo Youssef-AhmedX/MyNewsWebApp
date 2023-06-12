@@ -17,7 +17,7 @@ namespace MyNewsMvc.Core.Models
         [Display(Name = "News Context")]
         public string NewsContent { get; set; } = null!;
 
-        [RequiredIf("Id == 0", ErrorMessage = "You Must Insert Image!")]
+        [RequiredIf("CoverImgPath == null", ErrorMessage = "You Must Insert Image!")]
         [Display(Name = "News Cover Image")]
         public IFormFile? CoverImg { get; set; }
 

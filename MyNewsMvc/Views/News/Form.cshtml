@@ -31,9 +31,10 @@
             @if (!Model.Id.Equals(0))
             {
                 <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="CoverImgPath" />
 
             }
+
+            <input type="hidden" asp-for="CoverImgPath" value="@Model.CoverImgPath" />
 
             <div class="row mb-2 align-items-center">
                 <div class="col-md-8">
@@ -73,7 +74,7 @@
 
             <div class="row mb-2">
                 <div class="col-md-6 text-center mt-4">
-                    <img src="@(Model.Id.Equals(0) ? "/Images/no-image-available.jpg" : $"/Images/NewsCoverImgs/{@Model.CoverImgPath}")" style="max-width: 300px;max-height: 300px;" id="img-thumbnail" class="img-thumbnail shadow" alt="...">
+                    <img src="@(Model.CoverImgPath is null ? "/Images/no-image-available.jpg" : $"/Images/NewsCoverImgs/{@Model.CoverImgPath}")" style="max-width: 300px;max-height: 300px;" id="img-thumbnail" class="img-thumbnail shadow" alt="...">
                 </div>
                 <div class="col-md-6">
                     <div class="mb-2">

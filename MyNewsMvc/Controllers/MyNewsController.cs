@@ -23,7 +23,12 @@ namespace MyNewsMvc.Controllers
 
             string Data = response.Content.ReadAsStringAsync().Result;
             var NewsList = JsonConvert.DeserializeObject<IEnumerable<NewsViewModel>>(Data);
-            NewsList = NewsList.Where(n=>n.PublicationDate <= DateTime.Now);
+
+            if (NewsList is null)
+                return View();
+
+            NewsList = NewsList.Where(n=>n.PublicationDate <= DateTime.Now).OrderByDescending(n => n.PublicationDate).ToList();
+
             return View(NewsList);
         }
         public IActionResult Details(int id)
