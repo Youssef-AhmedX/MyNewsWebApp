@@ -1,7 +1,8 @@
 ﻿var rowUpdated;
 var newRow;
 var datatable;
-
+var dateTimeNow = new Date();
+;
 function showSuccessMessage(message = 'Saved Successfully!') {
 
 
@@ -117,15 +118,11 @@ $(document).ready(function () {
     });
 
     //DateRangePicker
-    $('.js-daterangepicker').daterangepicker({
-        singleDatePicker: true,
-        showDropdowns: true,
-        autoApply: true,
-        drops: 'auto',
-        locale: {
-            format: 'DD/MM/YYYY'
-        }
+    console.log(dateTimeNow);
+    $('.js-daterangepicker').flatpickr({
+
     });
+
 
 
     $('body').delegate('.js-change-btn', 'click', function () {

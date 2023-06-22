@@ -21,7 +21,6 @@ namespace MyNewsMvc.Core.Models
         [Display(Name = "News Cover Image")]
         public IFormFile? CoverImg { get; set; }
 
-
         [Display(Name = "Publication Date")]
         public DateTime PublicationDate { get; set; } = DateTime.Now;
 

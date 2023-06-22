@@ -172,7 +172,7 @@ namespace MyNewsMvc.Controllers
             }
 
             if (!ModelState.IsValid)
-                return BadRequest();
+                return View("Form", InitialNewsForm(model));
 
             if (!(model.PublicationDate >= DateTime.Today && model.PublicationDate <= DateTime.Today.AddDays(6)))
             {
